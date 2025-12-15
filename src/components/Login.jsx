@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+"use client";
+
+import { useState } from "react";
 import { loginUser } from "../api";
 import { setToken } from "../auth";
 
-const Login = ({ onLogin }) => {
+const Login = ({ onLogin, onToggle }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -39,6 +41,15 @@ const Login = ({ onLogin }) => {
         />
         <button type="submit">Login</button>
       </form>
+      <p style={{ textAlign: "center", marginTop: "15px" }}>
+        Don't have an account?{" "}
+        <span
+          style={{ color: "#007bff", cursor: "pointer" }}
+          onClick={onToggle}
+        >
+          Register here
+        </span>
+      </p>
     </div>
   );
 };

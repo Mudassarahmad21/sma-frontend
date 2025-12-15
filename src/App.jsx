@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client";
+
+import { useState } from "react";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./pages/Dashboard";
@@ -7,13 +9,13 @@ import "./styles/style.css";
 
 const App = () => {
   const [token, setToken] = useState(getToken());
+  const [showRegister, setShowRegister] = useState(false);
 
   if (!token) {
-    const [showRegister, setShowRegister] = useState(false);
     return showRegister ? (
-      <Register onRegister={setToken} />
+      <Register onRegister={setToken} onToggle={() => setShowRegister(false)} />
     ) : (
-      <Login onLogin={setToken} />
+      <Login onLogin={setToken} onToggle={() => setShowRegister(true)} />
     );
   }
 

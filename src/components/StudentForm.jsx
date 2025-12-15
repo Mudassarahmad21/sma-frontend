@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 
 const StudentForm = ({
   addStudent,
@@ -9,7 +11,9 @@ const StudentForm = ({
   const [student, setStudent] = useState({ name: "", email: "", course: "" });
 
   useEffect(() => {
-    if (selectedStudent) setStudent(selectedStudent);
+    if (selectedStudent) {
+      setStudent(selectedStudent);
+    }
   }, [selectedStudent]);
 
   const handleChange = (e) =>
@@ -20,7 +24,9 @@ const StudentForm = ({
     if (selectedStudent) {
       updateStudent(student);
       clearSelection();
-    } else addStudent(student);
+    } else {
+      addStudent(student);
+    }
     setStudent({ name: "", email: "", course: "" });
   };
 
@@ -53,6 +59,18 @@ const StudentForm = ({
       <button type="submit">
         {selectedStudent ? "Update Student" : "Add Student"}
       </button>
+      {selectedStudent && (
+        <button
+          type="button"
+          onClick={() => {
+            clearSelection();
+            setStudent({ name: "", email: "", course: "" });
+          }}
+          style={{ marginLeft: "10px", backgroundColor: "#6c757d" }}
+        >
+          Cancel
+        </button>
+      )}
     </form>
   );
 };

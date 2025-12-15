@@ -1,4 +1,3 @@
-import React from "react";
 import StudentItem from "./StudentItem";
 
 const StudentList = ({ students, onEdit, onDelete }) => {

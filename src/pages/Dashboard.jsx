@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 import {
   fetchStudents,
   createStudent,
@@ -15,8 +17,12 @@ const Dashboard = ({ onLogout }) => {
   const token = getToken();
 
   const loadStudents = async () => {
-    const res = await fetchStudents(token);
-    setStudents(res.data);
+    try {
+      const res = await fetchStudents(token);
+      setStudents(res.data);
+    } catch (error) {
+      console.error("Failed to load students:", error);
+    }
   };
 
   useEffect(() => {
@@ -24,18 +30,32 @@ const Dashboard = ({ onLogout }) => {
   }, []);
 
   const handleAdd = async (student) => {
-    await createStudent(student, token);
-    loadStudents();
+    try {
+      await createStudent(student, token);
+      loadStudents();
+    } catch (error) {
+      console.error("Failed to add student:", error);
+    }
   };
 
   const handleUpdate = async (student) => {
-    await updateStudent(student._id, student, token);
-    loadStudents();
+    try {
+      await updateStudent(student._id, student, token);
+      loadStudents();
+    } catch (error) {
+      console.error("Failed to update student:", error);
+    }
   };
 
   const handleDelete = async (id) => {
-    await deleteStudent(id, token);
-    loadStudents();
+    if (window.confirm("Are you sure you want to delete this student?")) {
+      try {
+        await deleteStudent(id, token);
+        loadStudents();
+      } catch (error) {
+        console.error("Failed to delete student:", error);
+      }
+    }
   };
 
   const handleEdit = (student) => setSelectedStudent(student);

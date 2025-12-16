@@ -1,5 +1,3 @@
-"use client";
-
 const StudentItem = ({ student, onEdit, onDelete }) => (
   <tr>
     <td>{student.name}</td>

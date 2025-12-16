@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import {
   fetchStudents,
@@ -7,14 +5,13 @@ import {
   updateStudent,
   deleteStudent,
 } from "../api";
-import { getToken, removeToken } from "../auth";
+import { removeToken } from "../auth";
 import StudentForm from "../components/StudentForm";
 import StudentList from "../components/StudentList";
 
-const Dashboard = ({ onLogout }) => {
+const Dashboard = ({ token, onLogout }) => {
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const token = getToken();
 
   const loadStudents = async () => {
     try {
@@ -26,8 +23,8 @@ const Dashboard = ({ onLogout }) => {
   };
 
   useEffect(() => {
-    loadStudents();
-  }, []);
+    if (token) loadStudents();
+  }, [token]);
 
   const handleAdd = async (student) => {
     try {
@@ -38,9 +35,9 @@ const Dashboard = ({ onLogout }) => {
     }
   };
 
-  const handleUpdate = async (student) => {
+  const handleUpdate = async (id, student) => {
     try {
-      await updateStudent(student._id, student, token);
+      await updateStudent(id, student, token);
       loadStudents();
     } catch (error) {
       console.error("Failed to update student:", error);

@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 
 const StudentForm = ({
@@ -11,9 +9,7 @@ const StudentForm = ({
   const [student, setStudent] = useState({ name: "", email: "", course: "" });
 
   useEffect(() => {
-    if (selectedStudent) {
-      setStudent(selectedStudent);
-    }
+    if (selectedStudent) setStudent(selectedStudent);
   }, [selectedStudent]);
 
   const handleChange = (e) =>
@@ -22,7 +18,7 @@ const StudentForm = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     if (selectedStudent) {
-      updateStudent(student);
+      updateStudent(student._id, student);
       clearSelection();
     } else {
       addStudent(student);

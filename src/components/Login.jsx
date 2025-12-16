@@ -1,8 +1,5 @@
-"use client";
-
 import { useState } from "react";
 import { loginUser } from "../api";
-import { setToken } from "../auth";
 
 const Login = ({ onLogin, onToggle }) => {
   const [email, setEmail] = useState("");
@@ -13,7 +10,6 @@ const Login = ({ onLogin, onToggle }) => {
     e.preventDefault();
     try {
       const res = await loginUser({ email, password });
-      setToken(res.data.token);
       onLogin(res.data.token);
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");

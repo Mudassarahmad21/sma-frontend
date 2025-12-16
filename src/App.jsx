@@ -1,25 +1,35 @@
-"use client";
-
 import { useState } from "react";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./pages/Dashboard";
-import { getToken } from "./auth";
+import { getToken, setToken as saveToken } from "./auth";
 import "./styles/style.css";
 
 const App = () => {
-  const [token, setToken] = useState(getToken());
+  const [token, setAuthToken] = useState(getToken());
   const [showRegister, setShowRegister] = useState(false);
+
+  const handleAuth = (newToken) => {
+    saveToken(newToken);
+    setAuthToken(newToken);
+  };
+
+  const handleLogout = () => {
+    setAuthToken(null);
+  };
 
   if (!token) {
     return showRegister ? (
-      <Register onRegister={setToken} onToggle={() => setShowRegister(false)} />
+      <Register
+        onRegister={handleAuth}
+        onToggle={() => setShowRegister(false)}
+      />
     ) : (
-      <Login onLogin={setToken} onToggle={() => setShowRegister(true)} />
+      <Login onLogin={handleAuth} onToggle={() => setShowRegister(true)} />
     );
   }
 
-  return <Dashboard onLogout={() => setToken(null)} />;
+  return <Dashboard token={token} onLogout={handleLogout} />;
 };
 
 export default App;

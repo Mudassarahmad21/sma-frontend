@@ -1,8 +1,5 @@
-"use client";
-
 import { useState } from "react";
 import { registerUser } from "../api";
-import { setToken } from "../auth";
 
 const Register = ({ onRegister, onToggle }) => {
   const [name, setName] = useState("");
@@ -14,7 +11,6 @@ const Register = ({ onRegister, onToggle }) => {
     e.preventDefault();
     try {
       const res = await registerUser({ name, email, password });
-      setToken(res.data.token);
       onRegister(res.data.token);
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");

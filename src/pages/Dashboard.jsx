@@ -9,49 +9,37 @@ import { removeToken } from "../auth";
 import StudentForm from "../components/StudentForm";
 import StudentList from "../components/StudentList";
 
-const Dashboard = ({ token, onLogout }) => {
+const Dashboard = ({ onLogout }) => {
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
   const loadStudents = async () => {
     try {
-      const res = await fetchStudents(token);
+      const res = await fetchStudents();
       setStudents(res.data);
     } catch (error) {
-      console.error("Failed to load students:", error);
+      console.error("Failed to load students", error);
     }
   };
 
   useEffect(() => {
-    if (token) loadStudents();
-  }, [token]);
+    loadStudents();
+  }, []);
 
   const handleAdd = async (student) => {
-    try {
-      await createStudent(student, token);
-      loadStudents();
-    } catch (error) {
-      console.error("Failed to add student:", error);
-    }
+    await createStudent(student);
+    loadStudents();
   };
 
   const handleUpdate = async (id, student) => {
-    try {
-      await updateStudent(id, student, token);
-      loadStudents();
-    } catch (error) {
-      console.error("Failed to update student:", error);
-    }
+    await updateStudent(id, student);
+    loadStudents();
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this student?")) {
-      try {
-        await deleteStudent(id, token);
-        loadStudents();
-      } catch (error) {
-        console.error("Failed to delete student:", error);
-      }
+    if (window.confirm("Are you sure?")) {
+      await deleteStudent(id);
+      loadStudents();
     }
   };
 
@@ -69,12 +57,14 @@ const Dashboard = ({ token, onLogout }) => {
       <button className="logout-btn" onClick={logout}>
         Logout
       </button>
+
       <StudentForm
         addStudent={handleAdd}
         selectedStudent={selectedStudent}
         updateStudent={handleUpdate}
         clearSelection={clearSelection}
       />
+
       <StudentList
         students={students}
         onEdit={handleEdit}

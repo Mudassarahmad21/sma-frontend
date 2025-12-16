@@ -29,7 +29,7 @@ const App = () => {
     );
   }
 
-  return <Dashboard token={token} onLogout={handleLogout} />;
+  return <Dashboard onLogout={handleLogout} />;
 };
 
 export default App;

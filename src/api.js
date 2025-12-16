@@ -1,28 +1,13 @@
-import axios from "axios";
+import api from "./axios";
 
-const API_URL = import.meta.env.VITE_API_URL;
+export const registerUser = (data) => api.post("/auth/register", data);
 
-export const registerUser = (data) =>
-  axios.post(`${API_URL}/auth/register`, data);
+export const loginUser = (data) => api.post("/auth/login", data);
 
-export const loginUser = (data) => axios.post(`${API_URL}/auth/login`, data);
+export const fetchStudents = () => api.get("/students");
 
-export const fetchStudents = (token) =>
-  axios.get(`${API_URL}/students`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const createStudent = (data) => api.post("/students", data);
 
-export const createStudent = (data, token) =>
-  axios.post(`${API_URL}/students`, data, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const updateStudent = (id, data) => api.put(`/students/${id}`, data);
 
-export const updateStudent = (id, data, token) =>
-  axios.put(`${API_URL}/students/${id}`, data, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-export const deleteStudent = (id, token) =>
-  axios.delete(`${API_URL}/students/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const deleteStudent = (id) => api.delete(`/students/${id}`);

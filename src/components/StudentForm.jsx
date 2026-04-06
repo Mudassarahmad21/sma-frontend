@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 
-const StudentForm = ({
-  addStudent,
-  selectedStudent,
-  updateStudent,
-  clearSelection,
-}) => {
+const StudentForm = ({ addStudent, selectedStudent, updateStudent, clearSelection }) => {
   const [student, setStudent] = useState({ name: "", email: "", course: "" });
 
+  // When a student is selected for editing, populate the form
   useEffect(() => {
-    if (selectedStudent) setStudent(selectedStudent);
+    if (selectedStudent) {
+      setStudent({
+        name:   selectedStudent.name,
+        email:  selectedStudent.email,
+        course: selectedStudent.course,
+      });
+    }
   }, [selectedStudent]);
 
   const handleChange = (e) =>
@@ -18,11 +20,21 @@ const StudentForm = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     if (selectedStudent) {
-      updateStudent(student._id, student);
+      // Only send name, email, course — not _id or other mongo fields
+      updateStudent(selectedStudent._id, {
+        name:   student.name,
+        email:  student.email,
+        course: student.course,
+      });
       clearSelection();
     } else {
       addStudent(student);
     }
+    setStudent({ name: "", email: "", course: "" });
+  };
+
+  const handleCancel = () => {
+    clearSelection();
     setStudent({ name: "", email: "", course: "" });
   };
 
@@ -58,10 +70,7 @@ const StudentForm = ({
       {selectedStudent && (
         <button
           type="button"
-          onClick={() => {
-            clearSelection();
-            setStudent({ name: "", email: "", course: "" });
-          }}
+          onClick={handleCancel}
           style={{ marginLeft: "10px", backgroundColor: "#6c757d" }}
         >
           Cancel

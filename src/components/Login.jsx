@@ -8,6 +8,7 @@ const Login = ({ onLogin, onToggle }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     try {
       const res = await loginUser({ email, password });
       onLogin(res.data.token);

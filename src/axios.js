@@ -6,7 +6,7 @@ const api = axios.create({
   timeout: 10000,
 });
 
-/* Attach token automatically */
+// Attach JWT token to every request automatically
 api.interceptors.request.use(
   (config) => {
     const token = getToken();
@@ -18,7 +18,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-/* Handle expired / invalid token */
+// If token is expired or invalid, log out automatically
 api.interceptors.response.use(
   (response) => response,
   (error) => {

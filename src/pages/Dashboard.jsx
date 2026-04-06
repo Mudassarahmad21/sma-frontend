@@ -10,15 +10,21 @@ import StudentForm from "../components/StudentForm";
 import StudentList from "../components/StudentList";
 
 const Dashboard = ({ onLogout }) => {
-  const [students, setStudents] = useState([]);
+  const [students, setStudents]           = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [loading, setLoading]             = useState(true);
+  const [error, setError]                 = useState("");
 
   const loadStudents = async () => {
     try {
+      setLoading(true);
+      setError("");
       const res = await fetchStudents();
       setStudents(res.data);
-    } catch (error) {
-      console.error("Failed to load students", error);
+    } catch (err) {
+      setError("Failed to load students. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -27,24 +33,35 @@ const Dashboard = ({ onLogout }) => {
   }, []);
 
   const handleAdd = async (student) => {
-    await createStudent(student);
-    loadStudents();
-  };
-
-  const handleUpdate = async (id, student) => {
-    await updateStudent(id, student);
-    loadStudents();
-  };
-
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure?")) {
-      await deleteStudent(id);
+    try {
+      await createStudent(student);
       loadStudents();
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to add student");
     }
   };
 
-  const handleEdit = (student) => setSelectedStudent(student);
-  const clearSelection = () => setSelectedStudent(null);
+  const handleUpdate = async (id, student) => {
+    try {
+      await updateStudent(id, student);
+      loadStudents();
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to update student");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this student?")) return;
+    try {
+      await deleteStudent(id);
+      loadStudents();
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to delete student");
+    }
+  };
+
+  const handleEdit     = (student) => setSelectedStudent(student);
+  const clearSelection = ()        => setSelectedStudent(null);
 
   const logout = () => {
     removeToken();
@@ -65,11 +82,15 @@ const Dashboard = ({ onLogout }) => {
         clearSelection={clearSelection}
       />
 
-      <StudentList
-        students={students}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      {loading && <p>Loading students...</p>}
+      {error   && <p className="error">{error}</p>}
+      {!loading && !error && (
+        <StudentList
+          students={students}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      )}
     </div>
   );
 };

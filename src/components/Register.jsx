@@ -9,6 +9,7 @@ const Register = ({ onRegister, onToggle }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     try {
       const res = await registerUser({ name, email, password });
       onRegister(res.data.token);

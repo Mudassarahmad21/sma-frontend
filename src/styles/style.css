@@ -596,7 +596,7 @@ body {
 .sk-badge  { height: 20px; width: 40%; border-radius: 99px; margin-bottom: 16px; }
 .sk-btns   { height: 30px; }
 
-/* ─── Count badge ────────────────────────────────────────────── */
+/* ─── Count badge */
 .count-badge {
   background: var(--surface2);
   border: 1px solid var(--border);
@@ -620,7 +620,7 @@ body {
   letter-spacing: -0.4px;
 }
 
-/* ─── Confirm Modal ──────────────────────────────────────────── */
+/* ─── Confirm Modal  */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -703,7 +703,7 @@ body {
   transform: translateY(-1px);
 }
 
-/* ─── Error Banner ───────────────────────────────────────────── */
+/* ─── Error Banner */
 .error-banner {
   display: flex;
   align-items: center;
@@ -716,7 +716,7 @@ body {
   font-size: 13px;
 }
 
-/* ─── Form Error Text ────────────────────────────────────────── */
+/* ─── Form Error Text  */
 .field-error {
   font-size: 11px;
   color: var(--danger);
@@ -724,7 +724,7 @@ body {
   margin-top: 2px;
 }
 
-/* ─── Divider ────────────────────────────────────────────────── */
+/* ─── Divider  */
 .divider {
   height: 1px;
   background: var(--border);

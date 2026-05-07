@@ -15,7 +15,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // If token is expired or invalid, log out automatically
@@ -27,7 +27,7 @@ api.interceptors.response.use(
       window.location.reload();
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;
